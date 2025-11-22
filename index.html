@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharing Spatula – Fight Food Waste. Feed the Community.</title>
+    <style>
+        /* ===================================================
+            GLOBAL STYLES (HEADER, FOOTER, CONTAINER, BUTTONS)
+            =================================================== */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            background-color: #F9F9F9;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        /* Header and Navigation */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #4CAF50; 
+            text-decoration: none;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            margin-left: 25px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        /* General Section Styling */
+        section {
+            padding: 60px 0;
+            text-align: center;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        h2 {
+            font-size: 2em;
+            color: #4CAF50;
+            margin-bottom: 40px;
+        }
+        .section-overlay {
+            background-color: rgba(255, 255, 255, 0.85); /* Light overlay for readability */
+            padding: 60px 0;
+        }
+
+        /* Call to Action Buttons */
+        .cta-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 0 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .cta-primary {
+            background-color: #4CAF50;
+            color: white;
+            border: 2px solid #4CAF50;
+        }
+        .cta-primary:hover {
+            background-color: #388E3C;
+        }
+        .cta-secondary {
+            background-color: transparent;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        .cta-secondary:hover {
+            background-color: #DCEDC8;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9em;
+        }
+        footer a {
+            color: #90CAF9;
+            text-decoration: none;
+        }
+
+        /* ===================================================
+            SINGLE PAGE NAVIGATION LOGIC (KEY STYLES)
+            =================================================== */
+        /* All main content sections are hidden by default */
+        .page-content {
+            display: none;
+        }
+        /* Only the active section is shown */
+        .page-content.active {
+            display: block;
+        }
+
+        /* ===================================================
+            HOME SECTION STYLES
+            =================================================== */
+        .hero {
+            /* Background Image for Hero Section */
+            background-image: url('https://img.freepik.com/premium-photo/indian-food-background-with-place-text-national-cuisine-india_641503-84399.jpg');
+            background-size: cover; 
+            padding: 100px 0;
+            text-align: center;
+            color: rgb(60, 223, 27);
+        }
+        .hero .container {
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .hero h1 {
+            font-size: 3em;
+            color: white; 
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #eee;
+        }
+        /* Overriding CTA secondary to look good on dark background */
+        .hero .cta-secondary {
+            color: white;
+            border-color: white;
+        }
+        .hero .cta-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* How It Works Section */
+        #how-it-works {
+             /* Light background */
+             background-color: #E8F5E9;
+             padding: 40px 0 60px 0;
+        }
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .step {
+            flex: 1;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .step:hover {
+            transform: translateY(-5px);
+        }
+        .step h3 {
+            color: #2E7D32;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        .step .icon {
+            font-size: 2.5em;
+            color: #4CAF50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        /* Our Team Section */
+        #our-team {
+            /* Background Image for Team Section */
+            background-image: url('https://images.unsplash.com/photo-1521737711867-e3b973753422?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            color: #333;
+        }
+        .team-info, .team-grid {
+              background-color: rgba(255, 255, 255, 0.9); 
+              padding: 20px;
+              border-radius: 10px;
+              margin-top: 20px;
+        }
+        .team-info {
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        .team-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .team-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .team-card h4 {
+            color: #2E7D32;
+            margin: 10px 0 5px;
+            font-size: 1.2em;
+        }
+        .team-card p {
+            font-size: 0.9em;
+            color: #666;
+            margin: 0;
+        }
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            background-color: #DCEDC8;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: #4CAF50;
+        }
+        /* Join the Movement CTA Section */
+        .join-movement {
+            background-color: #4CAF50;
+            color: white;
+            padding: 50px 0;
+        }
+        .join-movement h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        .join-movement .cta-button {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+        }
+
+
+        /* ===================================================
+            DONATE FOOD SECTION STYLES
+            =================================================== */
+        #donate-page {
+            /* Background Image for Donate Page */
+            background-image: url('https://img.freepik.com/premium-photo/indian-food-background-with-place-text-national-cuisine-india_641503-84399.jp');
+        }
+        .donation-form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background: rgba(108, 243, 67, 0.95); /* Semi-transparent background */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #181a18;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #1bb1cc;
+            border-radius: 5px;
+            box-sizing: border-box; 
+        }
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: rgb(29, 23, 18);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-button:hover {
+            background-color: #388E3C;
+        }
+        
+        /* Style for Confirmation Message */
+        #submission-message {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1ebcec; /* Light Green */
+            color: #2E7D32; /* Dark Green Text */
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+
+        /* ===================================================
+            FIND FOOD SECTION STYLES
+            =================================================== */
+        #find-page {
+            /* Background Image for Find Food Page */
+            background-image: url('');
+            color: rgb(37, 19, 201);
+        }
+        #find-page h2 {
+            color: rgb(33, 204, 17);
+            text-shadow: 1px 1px 2px #000;
+        }
+        #find-page p {
+            color: #461cb8;
+        }
+        .search-bar {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+        .search-bar input, .search-bar select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex-grow: 1;
+            max-width: 250px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #2E7D32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .listing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            text-align: left;
+            padding: 20px; /* Padding for the grid container itself */
+        }
+        .food-listing {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #333; /* Ensuring text is dark and readable */
+        }
+        .food-listing h3 {
+            color: #2E7D32;
+            margin-top: 0;
+        }
+        .reserve-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #FFC107;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        /* ===================================================
+            CONTACT US SECTION STYLES (NEW)
+            =================================================== */
+        #contact-page {
+             /* Changed background color as requested */
+             background-color: #f0fff0; 
+             padding: 80px 0;
+        }
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+        .contact-card {
+            text-align: center;
+            padding: 30px;
+            border: 1px solid #DCEDC8;
+            border-radius: 10px;
+            width: 300px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .contact-card .icon {
+            font-size: 2em;
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        .contact-card h4 {
+            margin-top: 0;
+            color: #2E7D32;
+        }
+        .contact-card a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#home" class="logo">Sharing Spatula</a>
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#donate-page" class="nav-link">Donate Food</a></li>
+                    <li><a href="#find-page" class="nav-link">Find Food</a></li>
+                    <li><a href="#contact-page" class="nav-link">Contact Us</a></li> 
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        
+        <div id="home" class="page-content active">
+            <section class="hero">
+                <div class="container">
+                    <h1>Sharing Spatula – Fight Food Waste. Feed the Community.</h1>
+                    <p>We connect surplus food donors with people in need</p>
+                    <a href="#donate-page" class="cta-button cta-primary nav-link">Donate Food</a>
+                    <a href="#find-page" class="cta-button cta-secondary nav-link">Find Available Food</a>
+                </div>
+            </section>
+
+            <section id="how-it-works">
+                <div class="container">
+                    <h2>How It Works</h2>
+                    <p>Three simple steps bridge the gap between food donors and receivers in India.</p>
+                    <div class="steps">
+                        <div class="step">
+                            <span class="icon">🍽️</span>
+                            <h3>1. Donor Lists Food</h3>
+                            <p>Hotels, caterers, or households in India submit surplus food details via the platform.</p>
+                        </div>
+                        <div class="step">
+                            <span class="icon">📱</span>
+                            <h3>2. Receiver Books Food</h3>
+                            <p>Registered NGOs and shelters browse available items in real time and reserve what they need instantly.</p>
+                        </div>
+                        <div class="step">
+                            <span class="icon">🤝</span>
+                            <h3>3. Pickup & Confirmation</h3>
+                            <p>Receivers collect the food at the agreed location and confirm the transfer on the app or site.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="our-team">
+                <div class="container">
+                    <div class="section-overlay">
+                        <h2>Our Team</h2>
+                        <div class="team-info">
+                            <p>Sharing Spatula is driven by a shared commitment to building a sustainable and caring community across India. Meet the founding members:</p>
+                        </div>
+                        
+                        <div class="team-grid">
+                            <div class="team-card">
+                                <div class="profile-pic">A</div>
+                                <h4>Akanksha C Shetty</h4>
+                               
+                            </div>
+                            <div class="team-card">
+                                <div class="profile-pic">H</div>
+                                <h4>Harini Perumal</h4>
+                               
+                            </div>
+                            <div class="team-card">
+                                <div class="profile-pic">H</div>
+                                <h4>Harshitha D.S</h4>
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="join-movement">
+                <div class="container">
+                    <h2>Join the Movement to End Food Waste in India with Sharing Spatula</h2>
+                    <a href="#donate-page" class="cta-button nav-link">Get Started Today</a>
+                </div>
+            </section>
+        </div>
+
+
+        <div id="donate-page" class="page-content">
+            <section class="content-section">
+                <div class="container">
+                    <h2>List Your Surplus Food</h2>
+                    <p style="color:rgb(235, 17, 17); text-shadow: 1px 1px 2px #000;">Help us fight food waste in India. Please provide accurate details so a verified receiver can easily coordinate pickup.</p>
+                    
+                    <div class="donation-form-container">
+                        <form id="donation-form" action="#" method="POST">
+                            <h3>Donor Information</h3>
+                            <div class="form-group">
+                                <label for="donor_name">Your Name / Organization Name*</label>
+                                <input type="text" id="donor_name" name="donor_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_phone">Contact Phone Number*</label>
+                                <input type="text" id="contact_phone" name="contact_phone" required>
+                            </div>
+
+                            <h3>Food Details</h3>
+                            <div class="form-group">
+                                <label for="food_type">Food Type*</label>
+                                <select id="food_type" name="food_type" required>
+                                    <option value="">Select Food Type</option>
+                                    <option value="Cooked Meals (Ready to Eat)">Cooked Meals (Ready to Eat)</option>
+                                    <option value="Raw/Perishable Ingredients">Raw/Perishable Ingredients</option>
+                                    <option value="Packaged/Non-Perishable">Packaged/Non-Perishable</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Estimated Quantity (Meals / Kg)*</label>
+                                <input type="text" id="quantity" name="quantity" placeholder="e.g., Approx. 50 Meals" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Detailed Description (e.g., Veg Biryani, Bread Loaves)*</label>
+                                <textarea id="description" name="description" rows="3" required></textarea>
+                            </div>
+
+                            <h3>Pickup Logistics (India)</h3>
+                            <div class="form-group">
+                                <label for="location">Pickup Address / Area (City, State)*</label>
+                                <input type="text" id="location" name="location" placeholder="e.g., Bengaluru, Karnataka" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pickup_time_window">Pickup Time Window (From - To)*</label>
+                                <input type="text" id="pickup_time_window" name="pickup_time_window" placeholder="e.g., 10:00 AM to 12:00 PM" required>
+                            </div>
+                            
+                            <button type="submit" class="submit-button">Submit Food Listing</button>
+                        </form>
+                        
+                        <div id="submission-message">
+                            🎉 Thank you! Your food listing has been submitted. A verified receiver will contact you shortly.
+                            <br><br>
+                            <a href="#home" class="cta-button cta-primary nav-link">Back to Home</a>
+                            <button type="button" class="cta-button cta-secondary" id="donate-another-button">List Another Item</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <div id="find-page" class="page-content">
+             <section class="content-section">
+                <div class="container">
+                    <div class="section-overlay">
+                        <h2>Find Available Food Listings in India</h2>
+                        <p>Browse surplus food items listed by verified donors in your area.</p>
+                        
+                        <div class="search-bar">
+                            <input type="text" placeholder="Search by City or Pin Code (e.g., Chennai 600001)">
+                            <select>
+                                <option value="">Filter by Food Type</option>
+                                <option value="Cooked Meals (Ready to Eat)">Cooked Meals</option>
+                                <option value="Raw/Perishable Ingredients">Raw Ingredients</option>
+                                <option value="Packaged/Non-Perishable">Packaged Goods</option>
+                            </select>
+                            <button>Search</button>
+                        </div>
+
+                        <div class="listing-grid" id="food-listing-grid">
+                            <div class="food-listing static-listing">
+                                <h3>Large Quantity of Apples and Bananas</h3>
+                                <p><strong>Donor:</strong> Local Wholesaler</p>
+                                <p><strong>Quantity:</strong> Approx. 50 Kg of Mixed Fruits</p>
+                                <p><strong>Location:</strong> Mumbai, Maharashtra</p>
+                                <p><strong>Pickup Window:</strong> Today, 4:00 PM - 6:00 PM</p>
+                                <a href="#" class="reserve-button">Reserve Food</a>
+                            </div>
+                            <div class="food-listing static-listing">
+                                <h3>Excess Rice (Basmati, 10 Kg Bags)</h3>
+                                <p><strong>Donor:</strong> Caterer Supplies India</p>
+                                <p><strong>Quantity:</strong> 100 Kg</p>
+                                <p><strong>Location:</strong> Delhi, NCR</p>
+                                <p><strong>Pickup Window:</strong> Any time tomorrow</p>
+                                <a href="#" class="reserve-button">Reserve Food</a>
+                            </div>
+                        </div>
+
+                        <p id="no-listings-message" style="display:none; color:#333; font-weight: bold; margin-top: 30px;">
+                            No new food listings available right now. Please check back later!
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <div id="contact-page" class="page-content">
+             <section class="content-section">
+                <div class="container">
+                    <h2>Get in Touch 📞</h2>
+                    <p>We are dedicated to supporting our community partners. Reach out with any questions or collaboration ideas!</p>
+                    
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <span class="icon">📧</span>
+                            <h4>Email Us</h4>
+                            <p>For General Inquiries, Partnerships, or Media.</p>
+                            <p><a href="mailto:info@sharingspatula.org">info@sharingspatula.org</a></p>
+                        </div>
+                        <div class="contact-card">
+                            <span class="icon">📱</span>
+                            <h4>Call/WhatsApp</h4>
+                            <p>For Urgent Food Donation Pickup Coordination.</p>
+                            <p>+91 8310837398</p>
+                        </div>
+                        
+                    </div>
+                    
+                    <p style="margin-top: 40px; font-style: italic;">We aim to respond to all non-urgent inquiries within 48 hours.</p>
+
+                </div>
+            </section>
+        </div>
+
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Sharing Spatula. All rights reserved. | <a href="#contact-page" class="nav-link">Contact Us</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.page-content');
+            const donationForm = document.getElementById('donation-form');
+            const submissionMessage = document.getElementById('submission-message');
+            const donateAnotherButton = document.getElementById('donate-another-button');
+            const foodListingGrid = document.getElementById('food-listing-grid');
+            const noListingsMessage = document.getElementById('no-listings-message');
+
+            // --- LOCAL STORAGE KEY ---
+            const STORAGE_KEY = 'sharingSpatulaFoodListings';
+
+            // Function to handle showing/hiding sections
+            function showSection(targetId) {
+                // 1. Hide all sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // 2. Show the target section
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    // Special case: If we are going to Find Food page, refresh the listings
+                    if (targetId === '#find-page') {
+                        renderFoodListings();
+                    }
+                }
+
+                // 3. Update active state on nav links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    // Check if the link's href matches the targetId
+                    if (link.getAttribute('href') === targetId) {
+                        link.classList.add('active');
+                    }
+                    // Special handling for CTA buttons inside sections
+                    if (link.classList.contains('cta-button') && targetId.startsWith(link.getAttribute('href'))) {
+                           // CTA buttons are treated as nav links but don't get the 'active' class on themselves
+                    }
+                });
+                
+                // 4. Scroll to top for a 'new page' feel
+                window.scrollTo(0, 0);
+            }
+            
+            // --- FOOD LISTING FUNCTIONS ---
+
+            // Loads listings from localStorage, or returns a default structure if none exist
+            function getListings() {
+                const storedListings = localStorage.getItem(STORAGE_KEY);
+                return storedListings ? JSON.parse(storedListings) : [];
+            }
+
+            // Saves the current listings array to localStorage
+            function saveListings(listings) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(listings));
+            }
+
+            // Clears and re-renders the food listings on the 'Find Food' page
+            function renderFoodListings() {
+                const listings = getListings();
+                
+                // Clear all static and dynamic listings
+                foodListingGrid.innerHTML = ''; 
+
+                if (listings.length === 0) {
+                    noListingsMessage.style.display = 'block';
+                } else {
+                    noListingsMessage.style.display = 'none';
+                    listings.forEach((listing, index) => {
+                        const listingElement = document.createElement('div');
+                        listingElement.className = 'food-listing';
+                        listingElement.innerHTML = `
+                            <h3>${listing.description} (${listing.food_type})</h3>
+                            <p><strong>Donor:</strong> ${listing.donor_name}</p>
+                            <p><strong>Quantity:</strong> ${listing.quantity}</p>
+                            <p><strong>Location:</strong> ${listing.location}</p>
+                            <p><strong>Pickup Window:</strong> ${listing.pickup_time_window}</p>
+                            <a href="#" class="reserve-button" data-listing-index="${index}">Reserve Food</a>
+                        `;
+                        foodListingGrid.appendChild(listingElement);
+                    });
+                }
+            }
+
+
+            // --- EVENT LISTENERS ---
+
+            // Handle initial load (based on URL hash, or default to home)
+            const initialHash = window.location.hash || '#home';
+            showSection(initialHash);
+
+            // Handle navigation clicks
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    
+                    // Update the URL hash without reloading the page
+                    history.pushState(null, null, targetId);
+                    
+                    showSection(targetId);
+                });
+            });
+
+            // Handle back/forward button navigation
+            window.addEventListener('popstate', () => {
+                const targetId = window.location.hash || '#home';
+                showSection(targetId);
+            });
+
+
+            // === CODE TO HANDLE FORM SUBMISSION AND STORAGE ===
+            if (donationForm) {
+                donationForm.addEventListener('submit', (e) => {
+                    e.preventDefault(); 
+                    
+                    if (donationForm.checkValidity()) {
+                        // 1. Gather form data
+                        const formData = {
+                            donor_name: document.getElementById('donor_name').value,
+                            contact_phone: document.getElementById('contact_phone').value,
+                            food_type: document.getElementById('food_type').value,
+                            quantity: document.getElementById('quantity').value,
+                            description: document.getElementById('description').value,
+                            location: document.getElementById('location').value,
+                            pickup_time_window: document.getElementById('pickup_time_window').value,
+                            timestamp: new Date().toISOString()
+                        };
+
+                        // 2. Load existing listings, add new one, and save
+                        const listings = getListings();
+                        listings.unshift(formData); // Add new listing to the beginning
+                        saveListings(listings);
+                        
+                        // 3. Hide the form and show the confirmation message
+                        donationForm.style.display = 'none';
+                        submissionMessage.style.display = 'block';
+                        
+                        // Optional: Clear fields for next use, though hidden now
+                        donationForm.reset(); 
+                        
+                    } else {
+                           // This part handles the visual feedback if fields are missing (relies on browser default UI)
+                           console.log("Form validation failed.");
+                    }
+                });
+            }
+
+            // Handle 'List Another Item' button click
+            if (donateAnotherButton) {
+                donateAnotherButton.addEventListener('click', () => {
+                    // Hide the confirmation message
+                    submissionMessage.style.display = 'none';
+                    // Show the form again
+                    donationForm.style.display = 'block';
+                });
+            }
+            // ==========================================
+        });
+    </script>
+
+</body>
+</html>
